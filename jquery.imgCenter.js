@@ -17,34 +17,34 @@
 (function($){
 	$.fn.imgCenter = function(options) {
 
-		var defaults = {  
+		var defaults = {
 		  	parentSteps: 0,
 		  	scaleToFit: true,
 		  	centerVertical: true,
 		  	complete: function(){},
 		  	start: function(){},
 		  	end: function(){}
-	  	};  
+	  	};
 	 	var opts = $.extend(defaults, options);
-	 	
+
 		opts.start.call(this);
-		
+
 		// Get total number of items.
 		var len = this.length - 1;
-		
+
 		return this.each(function(i){
 			var current = i;
-			
+
 			// Declare the current Image as a variable.
 			var org_image = $(this);
-			
+
 			org_image.hide();
-			
+
 			// Move up Parents until the spcified limit has been met.
 			var theParent = org_image;
 			for (var i=0; i <= opts.parentSteps; i++){
 				theParent = theParent.parent();
-			}			
+			}
 			var parWidth = parseInt(theParent.width());
 			var parHeight = parseInt(theParent.height());
 			var parAspect = parWidth / parHeight;
@@ -54,7 +54,7 @@
 			} else {
 				var loadWatch = setInterval(watch, 500);
 			}
-			
+
 			function watch(){
 				if(org_image[0].complete){
 					clearInterval(loadWatch);
@@ -63,26 +63,26 @@
 			}
 
 			function imgMath(org_image) {
-				// Get image properties.		
+				// Get image properties.
 				var imgWidth = parseInt(org_image.width());
 				var imgHeight = parseInt(org_image.height());
 				var imgAspect = imgWidth / imgHeight;
-	
+
 				// Center the image.
 				if(parWidth != imgWidth || parHeight != imgHeight){
 					theParent.css("overflow","hidden");
-					
+
 					if(opts.scaleToFit){
 						if(parAspect >= 1){
 							org_image.css({"width": parWidth +"px"});
 							imgWidth = parWidth;
 							imgHeight = Math.round(imgWidth / imgAspect);
-							
+
 							if((parWidth / imgAspect) < parHeight){
 								org_image.css({"height": parHeight +"px","width":"auto"});
 								imgHeight = parHeight;
 								imgWidth = Math.round(imgHeight * imgAspect);
-							}				
+							}
 						} else {
 							org_image.css({"height": parHeight +"px"});
 							imgHeight = parHeight;
@@ -98,7 +98,7 @@
 						}
 						if(imgHeight > parHeight && opts.centerVertical){
 							org_image.css({"margin-top":"-"+ Math.round((imgHeight - parHeight) / 2) +"px"});
-						}		
+						}
 					} else {
 						if(imgWidth > parWidth){
 							org_image.css({"margin-left":"-"+ Math.round((imgWidth - parWidth) / 2) +"px"});
@@ -116,9 +116,9 @@
 						opts.end.call(this);
 					}
 				}
-				org_image.show();	
+				org_image.show();
 			}
-			
-		});		
+
+		});
 	}
-})(jQuery);  
+})(jQuery);
